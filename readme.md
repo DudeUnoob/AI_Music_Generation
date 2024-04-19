@@ -4,7 +4,7 @@
 
 <p>Tech Stack currently (subject to change):</p>
 <ul>
-    <ol>Node JS
+    <ol>Node JS (Could possibly go to java/spring boot or even python with flask/django)
         <ol>Express js</ol>
     </ol>
     <ol href="https://moleculer.services/" target="_blank" style="text-decoration: underline;">Molecular JS (Microservice Architecture/Framework)
