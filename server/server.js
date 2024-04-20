@@ -15,6 +15,7 @@ module.exports = {
         initRoutes(app) {
             
             app.get("/api/createMusic", this.createMusic);
+            app.get("/api/testEndpoint", this.testCreateMusic)
             
         },
 
@@ -27,6 +28,18 @@ module.exports = {
               res.status(500).json({ error: "Internal Server Error" });
             }
         },
+
+        async testCreateMusic(req, res) {
+            try{
+                const result = await this.broker.call("testCreateMusic.testCreateMusicFunction")
+
+                res.json(result)
+            }
+            catch(err) {
+            console.error("Error calling createTestMusicFunction:", err);
+              res.status(500).json({ error: "Internal Server Error" });
+            }
+        }
 
     },
 
