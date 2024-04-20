@@ -5,9 +5,8 @@ module.exports = {
 
     actions:{
         async createMusicFunction(ctx) {
-            console.log(ctx)
 
-            return ctx
+            return { message: "I love this so much" }
         }
     }
 }

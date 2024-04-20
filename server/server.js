@@ -19,7 +19,13 @@ module.exports = {
         },
 
         async createMusic(req, res) {
-          
+            try {
+              const result = await this.broker.call("createMusic.createMusicFunction");
+               res.json(result);
+            } catch (err) {
+              console.error("Error calling createMusicFunction:", err);
+              res.status(500).json({ error: "Internal Server Error" });
+            }
         },
 
     },
@@ -27,8 +33,8 @@ module.exports = {
     created() {
         const app = express();
 
+       
         this.initRoutes(app);
-
         this.app = app;
     },
 
