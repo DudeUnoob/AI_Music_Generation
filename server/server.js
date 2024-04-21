@@ -14,14 +14,14 @@ module.exports = {
     methods: {
         initRoutes(app) {
             
-            app.get("/api/createMusic", this.createMusic);
+            app.post("/api/createMusic", this.createMusic);
             app.get("/api/testEndpoint", this.testCreateMusic)
             
         },
 
         async createMusic(req, res) {
             try {
-              const result = await this.broker.call("createMusic.createMusicFunction");
+              const result = await this.broker.call("createMusic.createMusicFunction", req.body);
                res.json(result);
             } catch (err) {
               console.error("Error calling createMusicFunction:", err);

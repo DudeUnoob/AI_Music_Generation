@@ -1,41 +1,25 @@
-"use strict"
-
-const axios = require("axios")
-require("dotenv").config()
+const axios = require("axios");
+require("dotenv").config();
 
 module.exports = {
     name: "createMusic",
 
     actions: {
         async createMusicFunction(ctx) {
+            const { textInput = "Jazz featuring a prominent trumpet solo, moderate tempo with other instruments accompanying it" } = ctx.params;
 
-            // const { prompt="drake beat", vibe="Hip-hop", duration=30 } = ctx.params
-
-            // const response = await axios.post("https://www.veed.io/text-to-music-ap/api/text-to-music", {
-            //     "prompt": prompt,
-            //     "vibe": vibe,
-            //     "duration": duration
-            // }, {
-            //     "Content-Type": "application/json"
-            // })
-
-            // console.log(response.headers["x-mubert-download-link"])
-            // return { musicFile: response.headers["x-mubert-download-link"] }
-
-            const { textInput = "Drums that sound like rain and thunder" } = ctx.params
-
-            const response = await axios.post("https://aitestkitchen.withgoogle.com/api/trpc/musicFx.generateSound", {
+            const body = {
                 "json": {
                     "generationCount": 2,
                     "input": {
-                        "textInput": "Drums that sound like rain and thunder"
+                        "textInput": textInput
                     },
                     "loop": false,
                     "seed": null,
                     "soundLengthSeconds": 31,
                     "model": "DEFAULT",
                     "clientContext": {
-                        "tool": "MUSICLM_V2"
+                        "tool": "MUSICLM_V2",
                     }
                 },
                 "meta": {
@@ -45,20 +29,32 @@ module.exports = {
                         ]
                     }
                 }
-            },
+            };
+            
+            try {
+                const response = await axios.post(
+                    "https://aitestkitchen.withgoogle.com/api/trpc/musicFx.generateSound",
+                    body,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "User-Agent": "Insomnia/2023.5.7",
+                            "Cookie": process.env.COOKIE
+                        }
+                    }
+                );
+                
+                const base64Audio = response?.data?.result?.data?.json?.result?.sounds[0]?.data;
+                const dataURI = `data:audio/mp3;base64,${base64Audio}`;
+                
+                
+                response.data.result.data.json.result.sounds[0].data = dataURI;
 
-                {
-                    "Content-Type": "application/json",
-                    "Cookie": process.env.COOKIE
-                }
-
-            )
-
-
-            console.log(response)
-
-
-            return response.data
+                return response.data;
+            } catch (error) {
+                console.error("Error occurred:", error);
+                return { error: error.message };
+            }
         }
     }
-}
+};
