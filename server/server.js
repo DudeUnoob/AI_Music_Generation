@@ -1,6 +1,7 @@
 "use strict";
 
 const { MoleculerError } = require("moleculer").Errors;
+const bodyParser = require("body-parser");
 const express = require("express");
 
 module.exports = {
@@ -20,12 +21,13 @@ module.exports = {
         },
 
         async createMusic(req, res) {
+            
             try {
-              const result = await this.broker.call("createMusic.createMusicFunction", req.body);
-               res.json(result);
+                const result = await this.broker.call("createMusic.createMusicFunction", req.body);
+                res.json(result);
             } catch (err) {
-              console.error("Error calling createMusicFunction:", err);
-              res.status(500).json({ error: "Internal Server Error" });
+                console.error("Error calling createMusicFunction:", err);
+                res.status(500).json({ error: "Internal Server Error" });
             }
         },
 
@@ -46,6 +48,8 @@ module.exports = {
     created() {
         const app = express();
 
+        app.use(bodyParser.json())
+        app.use(bodyParser.urlencoded({ extended: true }));
        
         this.initRoutes(app);
         this.app = app;

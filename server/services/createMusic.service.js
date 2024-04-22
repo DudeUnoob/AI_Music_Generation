@@ -6,7 +6,11 @@ module.exports = {
 
     actions: {
         async createMusicFunction(ctx) {
-            const { textInput = "Jazz featuring a prominent trumpet solo, moderate tempo with other instruments accompanying it" } = ctx.params;
+            let { textInput } = ctx.params;
+
+            if(textInput == "" || textInput == null) {
+                textInput = "A jazz style light"
+            }
 
             const body = {
                 "json": {
