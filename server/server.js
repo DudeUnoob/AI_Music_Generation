@@ -16,7 +16,7 @@ module.exports = {
         initRoutes(app) {
             
             app.post("/api/createMusic", this.createMusic);
-            app.get("/api/testEndpoint", this.testCreateMusic)
+            app.post("/api/testEndpoint", this.testCreateMusic)
             
         },
 
@@ -33,7 +33,7 @@ module.exports = {
 
         async testCreateMusic(req, res) {
             try{
-                const result = await this.broker.call("testCreateMusic.testCreateMusicFunction")
+                const result = await this.broker.call("testCreateMusic.testCreateMusicFunction", req.body)
 
                 res.json(result)
             }

@@ -9,9 +9,19 @@ module.exports = {
     actions: {
         async testCreateMusicFunction(ctx) {
 
+            let { prompt, vibe } = ctx.params 
+
+            if(prompt == "" || prompt == null){
+                prompt = "drake beat"
+            }
+
+            if(vibe == "" || vibe == null){
+                vibe = "Hip-hop"
+            }
+
             const response = await axios.post("https://www.veed.io/text-to-music-ap/api/text-to-music", {
-                "prompt": "drake beat",
-                "vibe": "Hip-hop",
+                "prompt": prompt,
+                "vibe": vibe,
                 "duration": 30
             }, {
                 "Content-Type": "application/json"
